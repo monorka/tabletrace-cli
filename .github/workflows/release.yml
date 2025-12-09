@@ -15,9 +15,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
-          - os: ubuntu-latest
+          - os: ubuntu-22.04
             target: aarch64-unknown-linux-musl
             cross: true
           - os: macos-latest
@@ -38,7 +38,7 @@ jobs:
       # Install cross for cross-compilation
       - name: Install cross
         if: matrix.cross
-        run: cargo install cross --git https://github.com/cross-rs/cross
+        run: cargo install cross --version 0.2.5
 
       # Build with cross or cargo
       - name: Build
