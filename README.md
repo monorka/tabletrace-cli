@@ -162,7 +162,7 @@ TableTrace monitors PostgreSQL's `pg_stat_user_tables` system view to detect cha
 ## Related
 
 - [TableTrace OSS](https://github.com/monorka/tabletrace-oss) - Desktop GUI application for local development
-- [TableTrace Pro](https://tabletrace.dev) - Team collaboration & staging support (coming soon)
+- TableTrace Pro - Team collaboration & staging support (coming soon)
 
 ## License
 

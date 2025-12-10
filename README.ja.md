@@ -163,7 +163,7 @@ TableTraceはPostgreSQLの `pg_stat_user_tables` システムビューを監視�
 ## 関連プロジェクト
 
 - [TableTrace OSS](https://github.com/monorka/tabletrace-oss) - ローカル開発向けデスクトップGUIアプリ
-- [TableTrace Pro](https://tabletrace.dev) - チーム開発・ステージング対応（近日公開）
+- TableTrace Pro - チーム開発・ステージング対応（近日公開）
 
 ## ライセンス
 
