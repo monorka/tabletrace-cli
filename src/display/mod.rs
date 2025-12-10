@@ -11,6 +11,7 @@ mod messages;
 // Public API
 pub use banner::{print_banner, print_help, print_interactive_hint, print_prompt};
 pub use change::print_change;
+pub use history::print_change_line;
 pub use diff::print_inline_diff;
 pub use history::{print_history, print_watching_tables, show_details};
 pub use messages::{

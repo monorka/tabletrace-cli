@@ -11,19 +11,21 @@ use std::collections::HashMap;
 use std::io::{self, Write};
 use std::sync::atomic::Ordering;
 use std::sync::{Arc, Mutex};
+
+use colored::Colorize;
 use tokio_postgres::NoTls;
 use tracing::error;
 
 use crate::constants::display::PROMPT_CLEAR_WIDTH;
 use crate::db::{get_all_tables, get_table_stats, has_stats_changes};
 use crate::display::{
-    print_banner, print_change, print_connected, print_connecting, print_connection_error,
-    print_inline_diff, print_interactive_hint, print_prompt, print_warning, print_watching_tables,
+    print_banner, print_change_line, print_connected, print_connecting, print_connection_error,
+    print_history, print_interactive_hint, print_prompt, print_warning, print_watching_tables,
 };
 use crate::state::{CHANGE_COUNT, CONNECTION_LOST};
 use crate::types::{ChangeHistory, TableSnapshots, WatchConfig};
 
-use changes::{add_to_history, collect_cycle_changes, create_change_event};
+use changes::{collect_cycle_changes, create_change_event};
 use handlers::process_user_input;
 use snapshot::{select_initial_tables, setup_input_channel, take_snapshots};
 use stats::debounce_stats;
@@ -132,16 +134,33 @@ pub async fn watch_tables(config: WatchConfig) -> Result<(), Box<dyn std::error:
                 cycle_result.total_rows,
             );
 
-            if config.interactive {
-                eprintln!("\r{}", " ".repeat(PROMPT_CLEAR_WIDTH));
-            }
-            print_change(&change, config.interactive);
-            if config.interactive {
-                print_inline_diff(&cycle_result.diffs);
-                print_prompt();
+            // Create record for display and history
+            let record = crate::types::ChangeRecord {
+                change,
+                diffs: cycle_result.diffs,
+            };
+
+            // Add to history first
+            {
+                let mut h = history.lock().unwrap();
+                h.push(record);
+                if h.len() > crate::constants::display::MAX_HISTORY_SIZE {
+                    h.remove(0);
+                }
             }
 
-            add_to_history(&history, change, cycle_result.diffs);
+            // Display full history
+            if config.interactive {
+                eprintln!("\r{}", " ".repeat(PROMPT_CLEAR_WIDTH));
+                print_history(&history);
+                print_prompt();
+            } else {
+                // Non-interactive: just show the latest change
+                let h = history.lock().unwrap();
+                if let Some(r) = h.last() {
+                    print_change_line(r, "");
+                }
+            }
         }
 
         prev_stats = final_stats;
