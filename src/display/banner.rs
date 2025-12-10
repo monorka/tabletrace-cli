@@ -3,23 +3,68 @@
 use colored::*;
 use std::io::{self, Write};
 use std::sync::atomic::Ordering;
+use terminal_size::{terminal_size, Width};
 
 use crate::state::CHANGE_COUNT;
 
+/// Large ASCII art banner (requires 90+ columns)
+const BANNER_LARGE: &str = r#"
+  ████████╗ █████╗ ██████╗ ██╗     ███████╗  ████████╗██████╗  █████╗  ██████╗███████╗
+  ╚══██╔══╝██╔══██╗██╔══██╗██║     ██╔════╝  ╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██╔════╝
+     ██║   ███████║██████╔╝██║     █████╗       ██║   ██████╔╝███████║██║     █████╗
+     ██║   ██╔══██║██╔══██╗██║     ██╔══╝       ██║   ██╔══██╗██╔══██║██║     ██╔══╝
+     ██║   ██║  ██║██████╔╝███████╗███████╗     ██║   ██║  ██║██║  ██║╚██████╗███████╗
+     ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
+"#;
+
+/// Medium ASCII art banner (requires 60+ columns)
+const BANNER_MEDIUM: &str = r#"
+  ╔════════════════════════════════════════════════════╗
+  ║     ▀█▀ █▀█ █▄▄ █   █▀▀   ▀█▀ █▀█ █▀█ █▀▀ █▀▀     ║
+  ║      █  █▀█ █▄█ █▄▄ ██▄    █  █▀▄ █▀█ █▄▄ ██▄     ║
+  ╚════════════════════════════════════════════════════╝
+"#;
+
+/// Small banner for narrow terminals
+const BANNER_SMALL: &str = r#"
+╭──────────────────────────╮
+│   Table Trace CLI        │
+╰──────────────────────────╯
+"#;
+
+/// Get terminal width
+fn get_terminal_width() -> u16 {
+    terminal_size()
+        .map(|(Width(w), _)| w)
+        .unwrap_or(80)
+}
+
 /// Display banner
 pub fn print_banner() {
-    eprintln!(
-        "\n{}",
-        "╔══════════════════════════════════════════════════════════╗".cyan()
-    );
-    eprintln!(
-        "{}",
-        "║           TableTrace - Real-time DB Monitor              ║".cyan()
-    );
-    eprintln!(
-        "{}",
-        "╚══════════════════════════════════════════════════════════╝".cyan()
-    );
+    let width = get_terminal_width();
+
+    if width >= 90 {
+        // Large ASCII art
+        for line in BANNER_LARGE.lines() {
+            eprintln!("{}", line.cyan());
+        }
+        eprintln!(
+            "{}  {}",
+            "                     ".dimmed(),
+            "Real-time PostgreSQL Monitor".dimmed()
+        );
+    } else if width >= 60 {
+        // Medium banner
+        for line in BANNER_MEDIUM.lines() {
+            eprintln!("{}", line.cyan());
+        }
+    } else {
+        // Small banner
+        for line in BANNER_SMALL.lines() {
+            eprintln!("{}", line.cyan());
+        }
+    }
+    eprintln!();
 }
 
 /// Display prompt

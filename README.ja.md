@@ -15,7 +15,11 @@ PostgreSQLの変更をリアルタイムで監視するCLIツール。
 - 🔄 **インタラクティブモード** - 変更の詳細確認、履歴表示、テーブル切り替えが可能
 - ⚡ **軽量** - トリガー不要、スキーマ変更不要、パフォーマンスへの影響最小限
 
+> 💡 **Note**: このCLIはローカル開発向けの**開発ツール**です。GUI版は [TableTrace OSS](https://github.com/monorka/tabletrace-oss) を参照。チーム開発やステージング環境向けは TableTrace Pro（近日公開）。
+
 ## インストール
+
+### npm（推奨）
 
 ```bash
 npm install -g @monorka/tabletrace
@@ -26,6 +30,16 @@ npm install -g @monorka/tabletrace
 ```bash
 npx @monorka/tabletrace watch --preset postgres
 ```
+
+### Cargo（Rust）
+
+```bash
+cargo install tabletrace
+```
+
+### 手動ダウンロード
+
+[GitHub Releases](https://github.com/monorka/tabletrace-cli/releases) からお使いのプラットフォーム用のバイナリをダウンロード。
 
 ## クイックスタート
 
@@ -132,9 +146,11 @@ TableTraceはPostgreSQLの `pg_stat_user_tables` システムビューを監視�
 
 ## 関連プロジェクト
 
-- [TableTrace GUI](https://github.com/monorka/tabletrace-oss) - ERD可視化機能付きフル機能デスクトップアプリケーション
+- [TableTrace OSS](https://github.com/monorka/tabletrace-oss) - ローカル開発向けデスクトップGUIアプリ
+- [TableTrace Pro](https://tabletrace.dev) - チーム開発・ステージング対応（近日公開）
 
 ## ライセンス
 
 MIT © [Monorka Inc.](https://github.com/monorka)
+
 

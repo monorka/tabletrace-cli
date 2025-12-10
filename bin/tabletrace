@@ -2,14 +2,42 @@
 
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 const ext = process.platform === 'win32' ? '.exe' : '';
 const binary = path.join(__dirname, `tabletrace-bin${ext}`);
+
+// Check if binary exists
+if (!fs.existsSync(binary)) {
+  console.error('\x1b[31mError: tabletrace binary not found.\x1b[0m');
+  console.error('');
+  console.error('The binary was not downloaded during installation.');
+  console.error('This can happen if npm scripts are disabled (ignore-scripts=true).');
+  console.error('');
+  console.error('\x1b[33mAlternative installation methods:\x1b[0m');
+  console.error('');
+  console.error('  1. Enable scripts and reinstall:');
+  console.error('     npm config set ignore-scripts false');
+  console.error('     npm install -g @monorka/tabletrace');
+  console.error('');
+  console.error('  2. Install via Cargo (Rust):');
+  console.error('     cargo install tabletrace');
+  console.error('');
+  console.error('  3. Download binary manually:');
+  console.error('     https://github.com/monorka/tabletrace-cli/releases');
+  console.error('');
+  process.exit(1);
+}
 
 const child = spawn(binary, process.argv.slice(2), {
   stdio: 'inherit',
 });
 
+child.on('error', (err) => {
+  console.error(`Failed to start tabletrace: ${err.message}`);
+  process.exit(1);
+});
+
 child.on('exit', (code) => {
-  process.exit(code);
+  process.exit(code ?? 1);
 });
