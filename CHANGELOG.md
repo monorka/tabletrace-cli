@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.1.1] - 2025-12-10
+
+### Added
+- Progress display during binary download in install script
+- Responsive ASCII banner that adapts to terminal width
+- Fallback installation methods (Cargo, manual download) when npm scripts are disabled
+- Helpful error message when binary is not found
+
+### Fixed
+- Execute permission on `bin/tabletrace` wrapper script
+- Cross-compilation for Linux ARM64 using musl target
+
+---
+
 ## [0.1.0] - 2025-12-09
 
 ### Added
@@ -38,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 <!-- Links -->
-[Unreleased]: https://github.com/monorka/tabletrace-cli/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/monorka/tabletrace-cli/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/monorka/tabletrace-cli/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/monorka/tabletrace-cli/releases/tag/v0.1.0

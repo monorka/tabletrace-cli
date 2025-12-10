@@ -34,9 +34,7 @@ const BANNER_SMALL: &str = r#"
 
 /// Get terminal width
 fn get_terminal_width() -> u16 {
-    terminal_size()
-        .map(|(Width(w), _)| w)
-        .unwrap_or(80)
+    terminal_size().map(|(Width(w), _)| w).unwrap_or(80)
 }
 
 /// Display banner
