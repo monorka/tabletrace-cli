@@ -125,6 +125,7 @@ pub fn create_change_event(
 }
 
 /// Add to history
+#[allow(dead_code)]
 pub fn add_to_history(history: &ChangeHistory, change: TableChange, diffs: Vec<RowDiff>) {
     let mut h = history.lock().unwrap();
     h.push(ChangeRecord { change, diffs });

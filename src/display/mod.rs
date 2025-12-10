@@ -10,8 +10,7 @@ mod messages;
 
 // Public API
 pub use banner::{print_banner, print_help, print_interactive_hint, print_prompt};
-pub use change::print_change;
-pub use diff::print_inline_diff;
+pub use history::print_change_line;
 pub use history::{print_history, print_watching_tables, show_details};
 pub use messages::{
     print_connected, print_connecting, print_connection_error, print_goodbye, print_success,
@@ -54,6 +53,7 @@ pub(crate) fn get_change_symbol(change_type: &str) -> ColoredString {
 }
 
 /// Format row diff values
+#[allow(dead_code)]
 pub(crate) fn format_diff_values(diff: &RowDiff, pk_col: &str) -> Vec<String> {
     match diff.change_type.as_str() {
         "added" => diff

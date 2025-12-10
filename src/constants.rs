@@ -3,6 +3,7 @@
 /// Display-related constants
 pub mod display {
     /// Maximum number of rows to show in inline diff
+    #[allow(dead_code)]
     pub const MAX_INLINE_DIFF_ROWS: usize = 15;
 
     /// Maximum number of history entries to keep

@@ -23,29 +23,33 @@ const target = PLATFORM_MAP[platformKey];
 // Check if this is an update (binary already exists)
 const isUpdate = fs.existsSync(path.join(__dirname, '..', 'bin', 'tabletrace-bin'));
 
-console.log('');
+// Use stderr for guaranteed output (npm may suppress stdout during postinstall)
+const log = (...args) => process.stderr.write(args.join(' ') + '\n');
+const logInline = (...args) => process.stderr.write(args.join(' '));
+
+log('');
 if (isUpdate) {
-  console.log('┌─────────────────────────────────────────┐');
-  console.log('│     🔄 Updating TableTrace CLI          │');
-  console.log('└─────────────────────────────────────────┘');
+  log('┌─────────────────────────────────────────┐');
+  log('│     🔄 Updating TableTrace CLI          │');
+  log('└─────────────────────────────────────────┘');
 } else {
-  console.log('┌─────────────────────────────────────────┐');
-  console.log('│     📦 Installing TableTrace CLI        │');
-  console.log('└─────────────────────────────────────────┘');
+  log('┌─────────────────────────────────────────┐');
+  log('│     📦 Installing TableTrace CLI        │');
+  log('└─────────────────────────────────────────┘');
 }
-console.log('');
+log('');
 
 if (!target) {
-  console.error(`❌ Unsupported platform: ${platformKey}`);
-  console.error('');
-  console.error('Supported platforms:');
-  console.error('  • darwin-arm64  (macOS Apple Silicon)');
-  console.error('  • darwin-x64    (macOS Intel)');
-  console.error('  • linux-arm64   (Linux ARM64)');
-  console.error('  • linux-x64     (Linux x64)');
-  console.error('  • win32-x64     (Windows x64)');
-  console.error('');
-  console.error('Alternative: cargo install tabletrace');
+  log(`❌ Unsupported platform: ${platformKey}`);
+  log('');
+  log('Supported platforms:');
+  log('  • darwin-arm64  (macOS Apple Silicon)');
+  log('  • darwin-x64    (macOS Intel)');
+  log('  • linux-arm64   (Linux ARM64)');
+  log('  • linux-x64     (Linux x64)');
+  log('  • win32-x64     (Windows x64)');
+  log('');
+  log('Alternative: cargo install tabletrace');
   process.exit(1);
 }
 
@@ -55,9 +59,9 @@ const downloadUrl = `https://github.com/${REPO}/releases/download/v${VERSION}/ta
 const binDir = path.join(__dirname, '..', 'bin');
 const binPath = path.join(binDir, binaryName);
 
-console.log(`Platform: ${platformKey}`);
-console.log(`Version:  v${VERSION}`);
-console.log('');
+log(`Platform: ${platformKey}`);
+log(`Version:  v${VERSION}`);
+log('');
 
 // Create bin directory if it doesn't exist
 if (!fs.existsSync(binDir)) {
@@ -73,7 +77,7 @@ function formatBytes(bytes) {
 
 // Get terminal width
 function getTerminalWidth() {
-  return process.stdout.columns || 80;
+  return process.stderr.columns || process.stdout.columns || 80;
 }
 
 // Print banner based on terminal width (same as banner.rs)
@@ -85,27 +89,27 @@ function printBanner() {
 
   if (width >= 90) {
     // Large ASCII art
-    console.log(cyan + '  ████████╗ █████╗ ██████╗ ██╗     ███████╗  ████████╗██████╗  █████╗  ██████╗███████╗' + reset);
-    console.log(cyan + '  ╚══██╔══╝██╔══██╗██╔══██╗██║     ██╔════╝  ╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██╔════╝' + reset);
-    console.log(cyan + '     ██║   ███████║██████╔╝██║     █████╗       ██║   ██████╔╝███████║██║     █████╗  ' + reset);
-    console.log(cyan + '     ██║   ██╔══██║██╔══██╗██║     ██╔══╝       ██║   ██╔══██╗██╔══██║██║     ██╔══╝  ' + reset);
-    console.log(cyan + '     ██║   ██║  ██║██████╔╝███████╗███████╗     ██║   ██║  ██║██║  ██║╚██████╗███████╗' + reset);
-    console.log(cyan + '     ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝' + reset);
-    console.log('');
-    console.log(dim + '                       Real-time PostgreSQL Monitor' + reset);
+    log(cyan + '  ████████╗ █████╗ ██████╗ ██╗     ███████╗  ████████╗██████╗  █████╗  ██████╗███████╗' + reset);
+    log(cyan + '  ╚══██╔══╝██╔══██╗██╔══██╗██║     ██╔════╝  ╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██╔════╝' + reset);
+    log(cyan + '     ██║   ███████║██████╔╝██║     █████╗       ██║   ██████╔╝███████║██║     █████╗  ' + reset);
+    log(cyan + '     ██║   ██╔══██║██╔══██╗██║     ██╔══╝       ██║   ██╔══██╗██╔══██║██║     ██╔══╝  ' + reset);
+    log(cyan + '     ██║   ██║  ██║██████╔╝███████╗███████╗     ██║   ██║  ██║██║  ██║╚██████╗███████╗' + reset);
+    log(cyan + '     ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝     ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝' + reset);
+    log('');
+    log(dim + '                       Real-time PostgreSQL Monitor' + reset);
   } else if (width >= 60) {
     // Medium banner
-    console.log(cyan + '  ╔════════════════════════════════════════════════════╗' + reset);
-    console.log(cyan + '  ║     ▀█▀ █▀█ █▄▄ █   █▀▀   ▀█▀ █▀█ █▀█ █▀▀ █▀▀     ║' + reset);
-    console.log(cyan + '  ║      █  █▀█ █▄█ █▄▄ ██▄    █  █▀▄ █▀█ █▄▄ ██▄     ║' + reset);
-    console.log(cyan + '  ╚════════════════════════════════════════════════════╝' + reset);
+    log(cyan + '  ╔════════════════════════════════════════════════════╗' + reset);
+    log(cyan + '  ║     ▀█▀ █▀█ █▄▄ █   █▀▀   ▀█▀ █▀█ █▀█ █▀▀ █▀▀     ║' + reset);
+    log(cyan + '  ║      █  █▀█ █▄█ █▄▄ ██▄    █  █▀▄ █▀█ █▄▄ ██▄     ║' + reset);
+    log(cyan + '  ╚════════════════════════════════════════════════════╝' + reset);
   } else {
     // Small banner
-    console.log(cyan + '╭──────────────────────────╮' + reset);
-    console.log(cyan + '│   Table Trace CLI        │' + reset);
-    console.log(cyan + '╰──────────────────────────╯' + reset);
+    log(cyan + '╭──────────────────────────────────────────╮' + reset);
+    log(cyan + '│       Table Trace CLI                    │' + reset);
+    log(cyan + '╰──────────────────────────────────────────╯' + reset);
   }
-  console.log('');
+  log('');
 }
 
 // Download binary with progress
@@ -115,12 +119,12 @@ function download(url, dest, redirectCount = 0) {
   }
 
   return new Promise((resolve, reject) => {
-    console.log(`📥 Downloading binary...`);
+    log(`📥 Downloading binary...`);
 
     https.get(url, (response) => {
       // Handle redirects
       if (response.statusCode === 302 || response.statusCode === 301) {
-        console.log('   ↳ Following redirect...');
+        log('   ↳ Following redirect...');
         download(response.headers.location, dest, redirectCount + 1)
           .then(resolve)
           .catch(reject);
@@ -143,18 +147,18 @@ function download(url, dest, redirectCount = 0) {
         if (totalBytes) {
           const percent = Math.floor((downloadedBytes / totalBytes) * 100);
           if (percent >= lastPercent + 10 || percent === 100) {
-            process.stdout.write(`\r   ↳ Progress: ${percent}% (${formatBytes(downloadedBytes)} / ${formatBytes(totalBytes)})`);
+            logInline(`\r   ↳ Progress: ${percent}% (${formatBytes(downloadedBytes)} / ${formatBytes(totalBytes)})`);
             lastPercent = percent;
           }
         } else {
-          process.stdout.write(`\r   ↳ Downloaded: ${formatBytes(downloadedBytes)}`);
+          logInline(`\r   ↳ Downloaded: ${formatBytes(downloadedBytes)}`);
         }
       });
 
       response.pipe(file);
 
       file.on('finish', () => {
-        console.log('');
+        log('');
         file.close();
         resolve();
       });
@@ -179,35 +183,35 @@ download(downloadUrl, binPath)
     }
 
     const stats = fs.statSync(binPath);
-    console.log(`   ↳ Binary size: ${formatBytes(stats.size)}`);
-    console.log('');
+    log(`   ↳ Binary size: ${formatBytes(stats.size)}`);
+    log('');
     if (isUpdate) {
-      console.log(`✅ Updated to v${VERSION}!`);
+      log(`✅ Updated to v${VERSION}!`);
     } else {
-      console.log('✅ Installation complete!');
+      log('✅ Installation complete!');
     }
-    console.log('');
+    log('');
 
     // Show banner based on terminal width
     printBanner();
 
-    console.log('  Get started:');
-    console.log('    tabletrace watch --preset postgres');
-    console.log('    tabletrace watch --preset supabase');
-    console.log('    tabletrace --help');
-    console.log('');
+    log('  Get started:');
+    log('    tabletrace watch --preset postgres');
+    log('    tabletrace watch --preset supabase');
+    log('    tabletrace --help');
+    log('');
   })
   .catch((err) => {
-    console.log('');
-    console.error(`❌ Failed to download: ${err.message}`);
-    console.error('');
-    console.error('Alternative installation methods:');
-    console.error('');
-    console.error('  1. Install via Cargo (Rust):');
-    console.error('     cargo install tabletrace');
-    console.error('');
-    console.error('  2. Download manually:');
-    console.error(`     ${downloadUrl}`);
-    console.error('');
+    log('');
+    log(`❌ Failed to download: ${err.message}`);
+    log('');
+    log('Alternative installation methods:');
+    log('');
+    log('  1. Install via Cargo (Rust):');
+    log('     cargo install --git https://github.com/monorka/tabletrace-cli');
+    log('');
+    log('  2. Download manually:');
+    log(`     ${downloadUrl}`);
+    log('');
     process.exit(1);
   });

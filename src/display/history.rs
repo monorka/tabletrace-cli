@@ -39,8 +39,8 @@ pub fn print_history(history: &ChangeHistory) {
     eprintln!("\n{}", "Type a number to see details (e.g., '1')".dimmed());
 }
 
-/// Display single history item
-fn print_history_item(record: &ChangeRecord) {
+/// Display single history item (also used for real-time change notification)
+pub fn print_change_line(record: &ChangeRecord, indent: &str) {
     let c = &record.change;
     let ct = colorize_change_type(&c.change_type);
     let diff_hint = if !record.diffs.is_empty() {
@@ -53,17 +53,28 @@ fn print_history_item(record: &ChangeRecord) {
 
     let row_suffix = if c.row_count > 1 { "s" } else { "" };
 
+    let table_display = if c.schema.is_empty() {
+        c.table.clone()
+    } else {
+        format!("{}.{}", c.schema, c.table)
+    };
+
     eprintln!(
-        "  {} [{}] {} {}.{} ({} row{}){}",
+        "{}{} [{}] {} {} ({} row{}){}",
+        indent,
         format!("#{}", c.id).cyan().bold(),
         c.timestamp.dimmed(),
         ct,
-        c.schema,
-        c.table,
+        table_display,
         c.row_count,
         row_suffix,
         diff_hint
     );
+}
+
+/// Display single history item (for history list)
+fn print_history_item(record: &ChangeRecord) {
+    print_change_line(record, "  ");
 }
 
 /// Show details

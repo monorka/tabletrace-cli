@@ -4,8 +4,9 @@ use colored::*;
 
 use crate::types::TableChange;
 
-/// Display change event
-pub fn print_change(change: &TableChange, interactive: bool) {
+/// Display change event (compact format)
+#[allow(dead_code)]
+pub fn print_change(change: &TableChange, interactive: bool, diff_count: usize) {
     let (icon, ct) = get_change_icon_and_color(change);
 
     let table_display = if change.schema.is_empty() {
@@ -15,17 +16,23 @@ pub fn print_change(change: &TableChange, interactive: bool) {
     };
 
     let row_suffix = if change.row_count > 1 { "s" } else { "" };
+    let diff_hint = if diff_count > 0 && interactive {
+        format!(" [{}]", format!("{} diff", diff_count).dimmed())
+    } else {
+        String::new()
+    };
 
     if interactive {
         eprintln!(
-            "{} {} [{}] {} {} ({} row{})",
+            "{} {} [{}] {} {} ({} row{}){}",
             icon,
             format!("#{}", change.id).cyan().bold(),
             change.timestamp.dimmed(),
             ct,
             table_display,
             change.row_count,
-            row_suffix
+            row_suffix,
+            diff_hint
         );
     } else {
         eprintln!(
@@ -41,6 +48,7 @@ pub fn print_change(change: &TableChange, interactive: bool) {
 }
 
 /// Get icon and color for change type
+#[allow(dead_code)]
 fn get_change_icon_and_color(change: &TableChange) -> (ColoredString, ColoredString) {
     if change.change_type.contains('+') {
         ("±".magenta(), change.change_type.magenta())

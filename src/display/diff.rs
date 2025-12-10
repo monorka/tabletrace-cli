@@ -7,6 +7,7 @@ use crate::constants::display::MAX_INLINE_DIFF_ROWS;
 use crate::types::RowDiff;
 
 /// Display inline diff
+#[allow(dead_code)]
 pub fn print_inline_diff(diffs: &[RowDiff]) {
     let mut current_table = String::new();
 
@@ -38,6 +39,7 @@ pub fn print_inline_diff(diffs: &[RowDiff]) {
 }
 
 /// Display single diff line
+#[allow(dead_code)]
 fn print_diff_line(diff: &RowDiff, pk_col: &str) {
     let symbol = get_change_symbol(&diff.change_type);
     let values = format_diff_values(diff, pk_col);
