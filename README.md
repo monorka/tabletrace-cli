@@ -1,4 +1,8 @@
 # tabletrace
+[![npm version](https://badge.fury.io/js/%40monorka%2Ftabletrace.svg)](https://www.npmjs.com/package/@monorka/tabletrace)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**English** | [日本語](./README.ja.md)
 
 ```
 ████████╗ █████╗ ██████╗ ██╗     ███████╗  ████████╗██████╗  █████╗  ██████╗███████╗
@@ -11,10 +15,7 @@
 
 Real-time PostgreSQL change monitoring CLI.
 
-[![npm version](https://badge.fury.io/js/%40monorka%2Ftabletrace.svg)](https://www.npmjs.com/package/@monorka/tabletrace)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-**English** | [日本語](./README.ja.md)
+![TableTrace Demo](public/image/demo.gif)
 
 ## Features
 
