@@ -13,7 +13,7 @@ const PGPASSWORD_ENV: &str = "PGPASSWORD";
 #[derive(Parser)]
 #[command(name = "tabletrace")]
 #[command(author = "Monorka Inc.")]
-#[command(version = "0.1.0")]
+#[command(version = env!("CARGO_PKG_VERSION"))]
 #[command(about = "Real-time PostgreSQL change monitoring", long_about = None)]
 pub struct Cli {
     #[command(subcommand)]

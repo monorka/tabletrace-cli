@@ -20,10 +20,19 @@ const PLATFORM_MAP = {
 const platformKey = `${platform}-${arch}`;
 const target = PLATFORM_MAP[platformKey];
 
+// Check if this is an update (binary already exists)
+const isUpdate = fs.existsSync(path.join(__dirname, '..', 'bin', 'tabletrace-bin'));
+
 console.log('');
-console.log('┌─────────────────────────────────────────┐');
-console.log('│     📦 Installing TableTrace CLI        │');
-console.log('└─────────────────────────────────────────┘');
+if (isUpdate) {
+  console.log('┌─────────────────────────────────────────┐');
+  console.log('│     🔄 Updating TableTrace CLI          │');
+  console.log('└─────────────────────────────────────────┘');
+} else {
+  console.log('┌─────────────────────────────────────────┐');
+  console.log('│     📦 Installing TableTrace CLI        │');
+  console.log('└─────────────────────────────────────────┘');
+}
 console.log('');
 
 if (!target) {
@@ -172,7 +181,11 @@ download(downloadUrl, binPath)
     const stats = fs.statSync(binPath);
     console.log(`   ↳ Binary size: ${formatBytes(stats.size)}`);
     console.log('');
-    console.log('✅ Installation complete!');
+    if (isUpdate) {
+      console.log(`✅ Updated to v${VERSION}!`);
+    } else {
+      console.log('✅ Installation complete!');
+    }
     console.log('');
 
     // Show banner based on terminal width
