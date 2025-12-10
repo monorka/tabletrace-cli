@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.1.4] - 2025-12-10
+
+### Changed
+- Change notifications now display full history instead of inline diff
+- Unified change display format between real-time notifications and history view
+- Added ASCII art banner to README
+
+### Fixed
+- Fixed unused code warnings with `#[allow(dead_code)]` annotations
+
+---
+
 ## [0.1.3] - 2025-12-10
 
 ### Fixed
@@ -71,7 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 <!-- Links -->
-[Unreleased]: https://github.com/monorka/tabletrace-cli/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/monorka/tabletrace-cli/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/monorka/tabletrace-cli/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/monorka/tabletrace-cli/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/monorka/tabletrace-cli/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/monorka/tabletrace-cli/compare/v0.1.0...v0.1.1

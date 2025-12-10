@@ -1,6 +1,6 @@
 [package]
 name = "tabletrace"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authors = ["Monorka Inc."]
 description = "Real-time PostgreSQL change monitoring CLI"
